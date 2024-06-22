@@ -1,0 +1,11 @@
+.toolbar-parent {
+  background-color: azure;
+  height: max-content;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  padding: 10%;
+  gap: 10px;
+  border-radius: 15%;
+  border-radius: 25px;
+}
