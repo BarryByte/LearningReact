@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import "./App.css";
 
 function App() {
@@ -6,6 +6,12 @@ function App() {
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [characterAllowed, setCharacterAllowed] = useState(false);
   const [pass, setPass] = useState("");
+  //ref hook
+  const passRef = useRef(null);
+  const copyPassToClipboard = useCallback(() => {
+    passRef.current?.select()
+     window.navigator.clipboard.writeText(pass);
+  },[pass])
 
   const passGenerator = useCallback(() => {
     let pass = "";
@@ -20,18 +26,27 @@ function App() {
     }
 
     setPass(pass);
-  }, [length, numberAllowed, characterAllowed]);
+  }, [length, numberAllowed, characterAllowed, setPass]);
 
-  useEffect(() => {passGenerator}, [length,numberAllowed,characterAllowed])
-  passGenerator();
+  useEffect(() => {
+    passGenerator();
+  }, [length, numberAllowed, characterAllowed]);
 
   return (
     <>
       <p>Random Pass Generator</p>
       <div className="main-container">
         <div className="password-container">
-          <input type="text" value={pass} readOnly />
-          <button className="button copy-btn">Copy</button>
+          <input 
+          type="text" 
+          value={pass}
+          placeholder="PassWord"
+          ref={passRef}
+
+           readOnly />
+          <button 
+          onClick={copyPassToClipboard}
+          className="button copy-btn">Copy</button>
         </div>
         <div className="lenNumChar">
           <div className="length">
